@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AdditionSimple : MonoBehaviour
+public class AdditionMoyen : MonoBehaviour
 {
-
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private TextMeshProUGUI number1, number2, Answer;
     private int _hiddenAnswer;
@@ -14,12 +13,7 @@ public class AdditionSimple : MonoBehaviour
     {
         CreateNewQuestion();
     }
-    private int CalculateAnswer(int _number1, int _number2)
-    {
-        int _hiddenAnswer = _number1 + _number2;
-        return _hiddenAnswer;
 
-    }
     public void AnswerQuestion()
     {
         int userInput;
@@ -46,15 +40,18 @@ public class AdditionSimple : MonoBehaviour
     {
         CreateNewQuestion();
     }
-    public void CreateNewQuestion()
+    private void CreateNewQuestion()
     {
         System.Random rnd = new System.Random();
         int _number1 = rnd.Next(0, 1000);
         int _number2 = rnd.Next(0, 1000);
 
         number1.text = _number1.ToString();
-        number2.text = _number2.ToString();
-        this._hiddenAnswer = CalculateAnswer(_number1, _number2);
+        number2.text = (_number1 + _number2).ToString();
+
+        this._hiddenAnswer = _number2; // Stockez le second nombre comme la réponse cachée
     }
+
+
 
 }

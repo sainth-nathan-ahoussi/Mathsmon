@@ -178,7 +178,18 @@ public class BattleSystem : MonoBehaviour
             
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            //dialogBox.EnableCalculBar(true);
+            if (currentMove == 0)
+            {
+                dialogBox.EnableCalculBar(true);
+            }if (currentMove == 1)
+            {
+                dialogBox.EnableCalculBarMoyen(true);//Calcul moyen
+            }
+            //else
+            //{
+            //dialogBox.EnableCalculBar(true);//Calcul Dificile
+            //}
+
             //StartCoroutine(PerformPlayerMove());
         }
     }
