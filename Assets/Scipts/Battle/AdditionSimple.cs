@@ -33,7 +33,7 @@ public class AdditionSimple : MonoBehaviour
         {
             if (!parseSuccess)
             {
-                Answer.text = "Input is not a valid number.";
+                Answer.text = "Vous n'avez rien rentré !!";
             }
             else
             {

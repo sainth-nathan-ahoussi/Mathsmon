@@ -49,6 +49,7 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableActionSelector(false);
         dialogBox.EnableDialogText(false);
         dialogBox.EnableMoveSelector(true);
+        //dialogBox.EnableCalculBar(false);
     }
 
     IEnumerator PerformPlayerMove()
@@ -177,7 +178,7 @@ public class BattleSystem : MonoBehaviour
             
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            dialogBox.EnableCalculBar(true);
+            //dialogBox.EnableCalculBar(true);
             //StartCoroutine(PerformPlayerMove());
         }
     }
