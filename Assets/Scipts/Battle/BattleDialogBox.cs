@@ -12,6 +12,7 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
     [SerializeField] GameObject moveDetails;
+    [SerializeField] GameObject calculBar;
     
     [SerializeField] List<Text> actionTexts;
     [SerializeField] List<Text> moveTexts;
@@ -43,6 +44,12 @@ public class BattleDialogBox : MonoBehaviour
     {
         actionSelector.SetActive(enabled);
     }
+
+    public void EnableCalculBar(bool enabled)
+    {
+        calculBar.SetActive(enabled);
+    }
+
 
     public void EnableMoveSelector(bool enabled)
     {

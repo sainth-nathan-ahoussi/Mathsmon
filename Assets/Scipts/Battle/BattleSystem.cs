@@ -177,8 +177,8 @@ public class BattleSystem : MonoBehaviour
             
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            //ici ca doit lancer ta fenetre de calcul
-            StartCoroutine(PerformPlayerMove());
+            dialogBox.EnableCalculBar(true);
+            //StartCoroutine(PerformPlayerMove());
         }
     }
 
