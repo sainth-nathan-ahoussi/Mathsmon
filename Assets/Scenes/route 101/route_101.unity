@@ -61742,7 +61742,19 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1455408101}
         m_TargetAssemblyTypeName: AdditionSimple, Assembly-CSharp
-        m_MethodName: AnswerQuestion
+        m_MethodName: OnSubmitButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1839011928}
+        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+        m_MethodName: OnAnswerSubmitted
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -65356,6 +65368,7 @@ MonoBehaviour:
   playerHud: {fileID: 1085986089}
   enemyHud: {fileID: 650007038}
   dialogBox: {fileID: 1961867838}
+  additionSimple: {fileID: 1455408101}
 --- !u!1 &1874140687
 GameObject:
   m_ObjectHideFlags: 0
@@ -65587,7 +65600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1961867835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65773,7 +65786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1999380131
 RectTransform:
   m_ObjectHideFlags: 0

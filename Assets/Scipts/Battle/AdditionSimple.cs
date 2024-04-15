@@ -9,6 +9,7 @@ public class AdditionSimple : MonoBehaviour
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private TextMeshProUGUI number1, number2, Answer;
     private int _hiddenAnswer;
+    
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class AdditionSimple : MonoBehaviour
         return _hiddenAnswer;
 
     }
-    public void AnswerQuestion()
+    public bool AnswerQuestion()
     {
         int userInput;
         bool parseSuccess = int.TryParse(_inputField.text, out userInput);
@@ -28,6 +29,7 @@ public class AdditionSimple : MonoBehaviour
         if (parseSuccess && userInput == this._hiddenAnswer)
         {
             Answer.text = "Bonne réponse!";
+            return true;
         }
         else
         {
@@ -38,8 +40,10 @@ public class AdditionSimple : MonoBehaviour
             else
             {
                 Answer.text = "Mauvaise réponse, la bonne réponse était " + this._hiddenAnswer;
+                return false;
             }
         }
+        return false;
     }
 
     public void NextQuestion()
@@ -56,5 +60,11 @@ public class AdditionSimple : MonoBehaviour
         number2.text = _number2.ToString();
         this._hiddenAnswer = CalculateAnswer(_number1, _number2);
     }
+
+    public void OnSubmitButtonPressed()
+    {
+        bool lastAnswerWasCorrect = AnswerQuestion();
+    }
+
 
 }

@@ -49,7 +49,7 @@ public class AdditionMoyen : MonoBehaviour
         number1.text = _number1.ToString();
         number2.text = (_number1 + _number2).ToString();
 
-        this._hiddenAnswer = _number2; // Stockez le second nombre comme la réponse cachée
+        this._hiddenAnswer = _number2; 
     }
 
 

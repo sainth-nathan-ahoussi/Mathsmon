@@ -15,11 +15,19 @@ public class BattleSystem : MonoBehaviour
     BattleState state;
     int currentAction;
     int currentMove;
+    [SerializeField] private AdditionSimple additionSimple;
 
     private void Start()
     {
         StartCoroutine(SetupBattle());
     }
+    public void OnAnswerSubmitted()
+    {
+        bool LastAnswerWasCorrect = additionSimple.AnswerQuestion();
+        StartCoroutine(PerformPlayerMove(LastAnswerWasCorrect));
+    }
+
+
 
     public IEnumerator SetupBattle()
     {
@@ -49,32 +57,36 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableActionSelector(false);
         dialogBox.EnableDialogText(false);
         dialogBox.EnableMoveSelector(true);
-        //dialogBox.EnableCalculBar(false);
     }
 
-    IEnumerator PerformPlayerMove()
+    IEnumerator PerformPlayerMove(bool LastAnswerWasCorrect)
     {
         state = BattleState.Busy;
-
+        bool isFainted = false;
         var move = playerUnit.Pokemon.Moves[currentMove];
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} used {move.Base.Name}");
 
         yield return new WaitForSeconds(1f);
 
-
-        //si ta fonction renvoie true (calcul reussi) alors 
-        // if (fonctionNathan() == true) {
-        bool isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
-        yield return enemyHud.UpdateHP();
-        // }
-
-        //si ta fonction renvoie false (calcul pas reussi) alors 
-        // else {
-        //       yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} a loupé {move.Base.Name}");
+        // if (currentMove == 0)
+        //{
+        //}
+        // else if (currentMove == 1) {
+        //isAnswerCorrect = additionSimple.AnswerQuestion();
         //}
 
+        //si ta fonction renvoie true (calcul reussi) alors 
+        if (LastAnswerWasCorrect == true) {
+            isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
+            yield return enemyHud.UpdateHP();
+        }
+        //si ta fonction renvoie false (calcul pas reussi) alors 
+         else {
+              yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} a loupé {move.Base.Name}");
+        }
 
-        if (isFainted)
+
+        if (!isFainted)
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name} Fainted");
         }
@@ -181,9 +193,12 @@ public class BattleSystem : MonoBehaviour
             if (currentMove == 0)
             {
                 dialogBox.EnableCalculBar(true);
-            }if (currentMove == 1)
+                StartCoroutine(PerformPlayerMove(false));
+            }
+            if (currentMove == 1)
             {
-                dialogBox.EnableCalculBarMoyen(true);//Calcul moyen
+                dialogBox.EnableCalculBarMoyen(true);
+                StartCoroutine(PerformPlayerMove(false));
             }
             //else
             //{
@@ -193,6 +208,4 @@ public class BattleSystem : MonoBehaviour
             //StartCoroutine(PerformPlayerMove());
         }
     }
-
-    // ta fonction doit renvoyer un bool qui sera utilisé dans PerformedPlayer
 }
