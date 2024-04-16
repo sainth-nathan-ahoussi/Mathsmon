@@ -82,6 +82,8 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
         
         var move = playerUnit.Pokemon.Moves[currentMove];
+        dialogBox.EnableCalculBar(false);
+        dialogBox.EnableCalculBarMoyen(false);
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} used {move.Base.Name}");
         bool isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
 
@@ -94,7 +96,7 @@ public class BattleSystem : MonoBehaviour
         }
         else {
             yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} a loupé {move.Base.Name}");
-            StartCoroutine(EnemyMove());
+            StartCoroutine(EnemyMove()); 
             dialogBox.EnableCalculBar(false);
             dialogBox.EnableCalculBarMoyen(false);
         }
@@ -115,6 +117,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.EnemyMove;
 
         var move = enemyUnit.Pokemon.GetRandomMove();
+        dialogBox.EnableDialogText(true);
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name} used {move.Base.Name}");
 
         yield return new WaitForSeconds(1f);
