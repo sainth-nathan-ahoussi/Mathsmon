@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AdditionSimple : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class AdditionSimple : MonoBehaviour
 
     public void NextQuestion()
     {
+        Answer.text = "";
+        _inputField.text = "";
         CreateNewQuestion();
     }
     public void CreateNewQuestion()
@@ -60,7 +63,6 @@ public class AdditionSimple : MonoBehaviour
         number2.text = _number2.ToString();
         this._hiddenAnswer = CalculateAnswer(_number1, _number2);
     }
-
     public void OnSubmitButtonPressed()
     {
         bool lastAnswerWasCorrect = AnswerQuestion();

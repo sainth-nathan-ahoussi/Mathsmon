@@ -14,7 +14,7 @@ public class AdditionMoyen : MonoBehaviour
         CreateNewQuestion();
     }
 
-    public void AnswerQuestion()
+    public bool AnswerQuestion()
     {
         int userInput;
         bool parseSuccess = int.TryParse(_inputField.text, out userInput);
@@ -22,6 +22,7 @@ public class AdditionMoyen : MonoBehaviour
         if (parseSuccess && userInput == this._hiddenAnswer)
         {
             Answer.text = "Bonne réponse!";
+            return true;
         }
         else
         {
@@ -32,12 +33,16 @@ public class AdditionMoyen : MonoBehaviour
             else
             {
                 Answer.text = "Mauvaise réponse, la bonne réponse était " + this._hiddenAnswer;
+                return false;
             }
         }
+        return false;
     }
 
     public void NextQuestion()
     {
+        Answer.text = "";
+        _inputField.text = "";
         CreateNewQuestion();
     }
     private void CreateNewQuestion()
@@ -52,6 +57,9 @@ public class AdditionMoyen : MonoBehaviour
         this._hiddenAnswer = _number2; 
     }
 
-
+    public void OnSubmitButtonPressed()
+    {
+        bool lastAnswerWasCorrect = AnswerQuestion();
+    }
 
 }

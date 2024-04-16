@@ -16,15 +16,31 @@ public class BattleSystem : MonoBehaviour
     int currentAction;
     int currentMove;
     [SerializeField] private AdditionSimple additionSimple;
+    [SerializeField] private AdditionMoyen additionMoyen;
+    private MonoBehaviour activeGame;
 
     private void Start()
     {
         StartCoroutine(SetupBattle());
     }
+
+    public void SetActiveGame(string gameType)
+    {
+        if (gameType == "Simple")
+            activeGame = additionSimple;
+        else if (gameType == "Moyen")
+            activeGame = additionMoyen;
+    }
     public void OnAnswerSubmitted()
     {
-        bool LastAnswerWasCorrect = additionSimple.AnswerQuestion();
-        StartCoroutine(PerformPlayerMove(LastAnswerWasCorrect));
+        bool lastAnswerWasCorrect = false;
+
+        if (activeGame == additionSimple)
+            lastAnswerWasCorrect = additionSimple.AnswerQuestion();
+        else if (activeGame == additionMoyen)
+            lastAnswerWasCorrect = additionMoyen.AnswerQuestion();
+
+        StartCoroutine(PerformPlayerMove(lastAnswerWasCorrect));
     }
 
 
@@ -47,6 +63,8 @@ public class BattleSystem : MonoBehaviour
     void PlayerAction()
     {
         state = BattleState.PlayerAction;
+        dialogBox.EnableCalculBar(false);
+        dialogBox.EnableCalculBarMoyen(false);
         StartCoroutine(dialogBox.TypeDialog("Choisissez une action"));
         dialogBox.EnableActionSelector(true);
     }
@@ -62,31 +80,27 @@ public class BattleSystem : MonoBehaviour
     IEnumerator PerformPlayerMove(bool LastAnswerWasCorrect)
     {
         state = BattleState.Busy;
-        bool isFainted = false;
+        
         var move = playerUnit.Pokemon.Moves[currentMove];
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} used {move.Base.Name}");
+        bool isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
 
         yield return new WaitForSeconds(1f);
 
-        // if (currentMove == 0)
-        //{
-        //}
-        // else if (currentMove == 1) {
-        //isAnswerCorrect = additionSimple.AnswerQuestion();
-        //}
-
-        //si ta fonction renvoie true (calcul reussi) alors 
         if (LastAnswerWasCorrect == true) {
             isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
             yield return enemyHud.UpdateHP();
+            
         }
-        //si ta fonction renvoie false (calcul pas reussi) alors 
-         else {
-              yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} a loupé {move.Base.Name}");
+        else {
+            yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name} a loupé {move.Base.Name}");
+            StartCoroutine(EnemyMove());
+            dialogBox.EnableCalculBar(false);
+            dialogBox.EnableCalculBarMoyen(false);
         }
 
 
-        if (!isFainted)
+        if (isFainted)
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name} Fainted");
         }
@@ -105,7 +119,6 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        //
         bool isFainted = playerUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
         yield return playerHud.UpdateHP();
 
@@ -190,22 +203,26 @@ public class BattleSystem : MonoBehaviour
             
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            if (currentMove == 0)
+            if (playerUnit.Pokemon.Base.Name == "Additix")
             {
-                dialogBox.EnableCalculBar(true);
-                StartCoroutine(PerformPlayerMove(false));
-            }
-            if (currentMove == 1)
-            {
-                dialogBox.EnableCalculBarMoyen(true);
-                StartCoroutine(PerformPlayerMove(false));
-            }
-            //else
-            //{
-            //dialogBox.EnableCalculBar(true);//Calcul Dificile
-            //}
+                if (currentMove == 0)
+                {
+                    dialogBox.EnableCalculBar(true);
+                    SetActiveGame("Simple");
+                    additionSimple.NextQuestion();
 
-            //StartCoroutine(PerformPlayerMove());
+                }
+                if (currentMove == 1)
+                {
+                    dialogBox.EnableCalculBarMoyen(true);
+                    SetActiveGame("Moyen");
+                    additionMoyen.NextQuestion();
+
+                } //else
+                  //{
+                  //dialogBox.EnableCalculBar(true);//Calcul Dificile
+                  //}
+            }//if (playerUnit.Pokemon.Base.Name == "Additix")
         }
     }
 }
